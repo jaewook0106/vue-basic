@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+</head>
+<body>
+  <div id="watch-example">
+    <p>
+      yes/no 질문을 물어보세요
+      <input type="text" v-model="question">
+    </p>
+    <p>{{answer}}</p>
+    <img v-if="imgsrc" :src="imgsrc" alt="">
+  </div>
+  <script>
+    const app = new Vue({
+      el:'#watch-example',
+      data:{
+        question:'',
+        answer:'질문을 하기 전까지는 대답할 수 없습니다.',
+        imgsrc :''
+      },
+      watch:{
+        question(newQuestion){
+          this.imgsrc ='';
+          this.answer = '입력값을 받는 중...';
+          this.getAnswer();
+        }
+      },
+      methods:{
+        getAnswer: _.debounce(function(){
+          
+          if(this.question.indexOf('?') === -1){
+            this.answer = '질문에는 물음표가 붙습니다!'
+            return;            
+          }
+          this.answer = '생각중...';
+
+          let vm = this;
+          axios.get('https://yesno.wtf/api')
+            .then(function(response){
+              console.log(response)
+              vm.answer = _.capitalize(response.data.answer);
+              vm.imgsrc = response.data.image
+            })
+            .catch(function(err){
+              vm.answer = '에러! API 요청 오류!' + err;
+            })
+
+        }, 500)
+      }
+    })
+  </script>
+</body>
+</html>

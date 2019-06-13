@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app1">
+    {{foo}}
+    <component1 :foo.sync="foo"></component1>
+  
+  </div>
+  <div id="app2">
+    {{input1}} <br>
+    <Component2 v-model="input1"></Component2>
+  </div>
+  <hr>
+  <div id="app3-1">
+    <Component3_1></Component3_1>
+  </div>
+  
+  <div id="app3-2">
+    
+  </div>
+  <script>
+
+      let eventBus = new Vue();
+
+      let Component1 = {
+        template:`
+        <div>
+        <input v-model="updateText">
+        <button @click="updateFoo">클릭</button>
+        </div>
+        `,
+        data(){
+          return{
+            updateText:''
+          }
+        },
+        methods:{
+          updateFoo(){
+            this.$emit('update:foo', this.updateText)
+          }
+        }
+      }
+      let app1 = new Vue({
+        el:'#app1',
+        components:{
+          Component1
+        },
+        data:{
+          foo:'vueJs'
+        },
+        methods: {
+          changeFoo(val){
+            console.log(val);
+            this.foo = val
+          }
+        }
+
+      })
+      
+      let Component2 = {
+        template:`<input 
+                    type="text" :value="value "@input="$emit('input',$event.target.value)"
+                  > `,
+        props:['value']          
+      }
+      let app2 = new Vue({
+        el:'#app2',
+        components:{
+          Component2
+        },
+        data:{
+          input1:'',
+          input2:''
+        }
+      })
+
+      let Component3_2 = {
+        template:`<button @click="clickButton">클릭</button>`,
+        methods:{
+          clickButton(){
+            eventBus.$emit('buttonClick','클릭 value')
+          }
+        }
+      }
+      
+      let Component3_1 = {
+        template: `<div>
+                    이벤트 버스
+                    <Component3_2 />
+                    </div>`,
+        components:{
+          Component3_2
+        }
+      }
+      
+
+      let app3_1 = new Vue({
+        el:'#app3-1',
+        components:{
+          Component3_1,
+        },
+        created(){
+          eventBus.$on('buttonClick', (val) =>{console.log('app3-1에서 이벤트 받음', val)})
+        }
+      })
+
+      let app3_2 = new Vue({
+        el:'#app3-2',
+        components:{
+          
+        },
+        created(){
+          eventBus.$on('buttonClick', this.listenEvent)
+        },
+        methods:{
+          listenEvent(val){
+            console.log('app3_2에서 이벤트 받음',val)
+          }
+        }
+        
+      })
+      
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app1">
+    <button type="button" @click="counter++">카운터</button>
+    <p>버튼을 클릭한 횟수 는 {{counter}}번 </p>
+  </div>
+  <div id="app2">
+    <button type="button" @click="add1">카운터</button>
+    <p>버튼을 클릭한 횟수 는 {{counter}}번 </p>
+  </div>
+  <div id="app3">
+    <button type="button" @click="add1(2, $event)">카운터</button>
+    <p>버튼을 클릭한 횟수 는 {{counter}}번 </p>
+  </div>
+  <div id="app4">
+    <input type="text" @keyup="keyUp">
+    <input type="text" 
+    @keyup.shift.enter= "shiftKeyUp"
+    @keyup.ctrl.67= "copyValue"
+    @keyup.ctrl.86 = "pasteValue"
+    >
+  </div>
+  <script>
+    let app1 = new Vue({
+      el:'#app1',
+      data:{
+        counter:0
+      }
+    })
+
+    let app2 = new Vue({
+      el:'#app2',
+      data:{
+        counter:0
+      },
+      methods: {
+        add1(e){
+          console.log(e.target.tagName)
+          this.counter++
+        }
+      }
+    })
+    let app3 = new Vue({
+      el:'#app3',
+      data:{
+        counter:0
+      },
+      methods:{
+        add1(val, e){
+          this.counter += val
+          console.log(e.target.tagName)
+        }
+      }
+    })
+    let app4 = new Vue({
+      el:'#app4',
+      methods:{
+        keyUp(e){
+          console.log(e.key+ ' : ' + e.keyCode)
+
+        },
+        shiftKeyUp(e){
+          console.log('shift',e.key)
+        },
+        copyValue(e){
+          console.log('copy',e.key)
+        },
+        pasteValue(e){
+          console.log('paste',e.key)
+        }
+      }
+    })
+
+
+  </script>
+</body>
+</html>

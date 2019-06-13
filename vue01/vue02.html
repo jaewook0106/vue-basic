@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue Study</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app1">
+    <p>{{html}}</p>
+    <p v-html="html"></p>
+  </div>
+  <hr>
+  <div id="app2">
+    <div v-bind:id="dynamicId">
+      id
+    </div>
+    <button v-bind:disabled="buttonDisable">disabled</button>
+  </div>
+  <hr>
+  <div id="app3">
+    <p>{{ number + 1 }}</p>
+    <p>{{ ok ? '안녕' : '노안녕' }}</p>
+    <p>{{ message.split('').reverse().join('') }}</p>
+  </div>
+  <script>
+    let data = {
+      a:1,
+      b:2
+    }
+    let app1 = new Vue({
+      el:'#app1',
+      data:{
+        html:'<span style="color:red">html-test<span>'
+      }
+    })
+    let app2 = new Vue({
+      el:'#app2',
+      data:{
+        dynamicId:'userID',
+        buttonDisable: true
+      }
+    })
+
+    let app3 = new Vue({
+      el:'#app3',
+      data:{
+        message:'hello vue js',
+        number:1,
+        ok:true
+      }
+    })
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let products = [
+      { name:'화장품', price:20000},
+      { name:'치즈', price:5000},
+      { name:'수박', price:15000},
+      { name:'소주', price:1000},
+      { name:'과자', price:1200},
+      { name:'초코바', price:800}
+    ]
+
+    // let result = [];
+    // for(const i of products){
+    //   result.push(i.price)
+    // }
+    // console.log(result)
+    const map = (fn, iter) => {
+      const result = [];
+      for(const i of iter){
+        result.push(fn(i))
+      }
+      return result
+    }
+
+    
+
+
+    const mapResult = map(i=>i.price, products);
+    console.log(mapResult);
+
+    // let result = [];
+    // for(const i of products){
+    //   if(i.price > 10000) result.push(i);
+    // }
+    // console.log(result)
+
+    const filter = (fn, iter) => {
+      let result = [];
+      for(const i of iter){
+        if(fn(i)) result.push(i);
+      }
+      return result
+    }
+
+    const filterResult = filter(i => i.price > 10000, products);
+    console.log(filterResult);
+    
+
+    const numbers = [1,2,3,4,5,6,7,8,9,10];
+    // let iter = numbers[Symbol.iterator]();
+    // console.log(iter.next())
+
+    // let total = 0;
+    // for(const i of iter){
+    //   // total = total+ i;
+    //   console.log(i)
+    // }
+    // console.log(total);
+
+    const reduce = (fn, iter, acc) => {
+      // let result = 0;
+      if(!acc){
+        iter = iter[Symbol.iterator]();
+        acc = iter.next().value
+        // acc = iter.shift()
+      }
+      for(const i of iter){
+        acc = fn(acc, i)
+      }
+      return acc;
+    }
+    const add = (a,b) => a + b
+    const resuceResult = reduce(add, numbers, 5)
+    console.log(resuceResult)
+
+    // 5만원 이상의 제품 값 합
+
+    console.log(filter(p => p.price > 10000,products))
+    console.log(map(p => p.price, filter(p => p.price > 10000,products)))
+    console.log(reduce((a,b)=>a+b, map(p => p.price, filter(p => p.price > 10000,products))))
+
+    const go = (...args) => reduce((acc, fn)=> fn(acc), args)
+    go(
+      products,
+      products => filter(p => p.price > 10000,products),
+      products => map(p => p.price, filter(p => p.price > 10000,products)),
+      prices => reduce((a,b)=>a+b,prices),
+      result => console.log(result)
+    )
+
+    // const pipe = (...fns) => (val) => go(val, ...fns)
+
+    // const resultPipe = pipe(
+    //   products,
+    //   products => filter(p => p.price > 10000,products),
+    //   products => map(p => p.price, filter(p => p.price > 10000,products)),
+    //   prices => reduce((a,b)=>a+b,prices),
+    //   result => console.log('pipe',result)
+    // )
+
+    // resultPipe(products)
+  </script>
+</body>
+</html>

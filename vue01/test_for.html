@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app1">
+    <ul style="list-style:none">
+      <li 
+        v-for="(item,idx) in todoItems" 
+        :key="item.id"
+        
+        :style="{color: item.done ? 'orange' : '#666'}"
+      >
+        <input type="checkbox" v-model="item.done">
+        <span>{{idx + 1}} </span><span>{{item.title}}</span>
+      </li>
+    </ul>
+  </div>
+  <hr>
+  <div id="app2">
+    <ul>
+      <template v-for="(item,key,idx) in todoItems">
+      <li>
+        {{idx}} - {{key}} : {{item}}
+      </li>
+      </template>
+    </ul>
+  </div>
+  <hr>
+  <div id="app3">
+    <ul>
+      <li 
+      is="my-component"
+      v-for="item in todoItems" 
+      :item="item">
+      </li>
+    </ul>
+  </div>
+  <hr>
+  <div id="app4">
+    <input type="text" v-model="todoText" @keyup.enter="addTodo" placeholder="add todo">
+    <ul>
+      <li 
+      is="my-component"
+      v-for="item in todoItems" 
+      :item="item"
+      @remove="handleRemove(item.id)"
+      :key="item.id"
+      >
+      </li>
+    </ul>
+  </div>
+  <script>
+    let app1 = new Vue({
+      el:'#app1',
+      data:{
+        todoItems:[
+          {
+            id:0,
+            title:'할일1',
+            done:false
+          },
+          {
+            id:1,
+            title:'할일2',
+            done:false
+          },
+          {
+            id:2,
+            title:'할일3',
+            done:true
+          },
+          {
+            id:3,
+            title:'할일4',
+            done:false
+          }
+        ]
+      }
+    })
+
+    let app2 = new Vue({
+      el:'#app2',
+      data:{
+        todoItems:{
+          id:0,
+          title:'할일1',
+          done:false
+        }
+      }
+    })
+    
+    let chlidComponent = {
+      template:`<li>
+                  {{item.title}}
+                  <button @click="$emit(\'remove\')">X</button>
+                </li>`,
+      props:['item']
+    }
+
+    let app3 = new Vue({
+      el:'#app3',
+      components:{
+        'my-component' : chlidComponent
+      },
+      data:{
+        todoItems:[
+          {
+            id:0,
+            title:'할일1',
+            done:false
+          },
+          {
+            id:1,
+            title:'할일2',
+            done:false
+          },
+          {
+            id:2,
+            title:'할일3',
+            done:true
+          },
+          {
+            id:3,
+            title:'할일4',
+            done:false
+          }
+        ]
+      }
+    })
+
+    let app4 = new Vue({
+      el:'#app4',
+      components:{
+        'my-component' : chlidComponent
+      },
+      data:{
+        todoItems:[
+          {
+            id:0,
+            title:'할일1',
+            done:false
+          },
+          {
+            id:1,
+            title:'할일2',
+            done:false
+          },
+          {
+            id:2,
+            title:'할일3',
+            done:true
+          },
+          {
+            id:3,
+            title:'할일4',
+            done:false
+          }
+        ],
+        todoText:''
+      },
+      methods: {
+        handleRemove(idx){
+          this.todoItems = this.todoItems.filter(item => item.id !== idx)
+        },
+        addTodo(){
+          // console.log(this.todoText)
+          if(this.todoText ==='') return
+          let maxId = 0;
+          this.todoItems.forEach(item => {
+            maxId = maxId > item.id ? maxId : item.id
+          });
+          console.log(maxId + 1)
+          // this.todoItems.push({id: maxId+1,title:this.todoText, done:false})
+          this.todoItems = this.todoItems.concat([{id: maxId+1,title:this.todoText, done:false}])
+          this.todoText=''
+        }
+      },
+    })
+    
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<html lang="ko"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GROUP_5 TEST</title>
+    <!-- <link rel="stylesheet" href="/assets/css/reset.css"> -->
+  </head>
+  <body>
+    <div class="content">
+      <a href="/">[back to bridge page]</a>
+      <h1>file-name : ex-3-render-kerry</h1>
+      <div id="root"></div>
+  
+  <script>
+    (function () {
+      'use strict';
+  
+
+      function CreateNode(options){
+        this.template = '';
+        this.node = options;  
+      }
+
+
+      CreateNode.prototype.render = function(id){
+        this.template = this.parse(this.node);
+        document.getElementById(id).appendChild(this.template);
+      }
+      CreateNode.prototype.parse = function(node){
+        var element = document.createElement(node.nodeName);
+        this.textDraw(element,node.nodeText || '');
+        this.cssDraw(element,node.nodeStyle || {});
+        this.attrDraw(element,node.nodeAttr || {});
+        this.appendDraw(element,node.nodeChildren || []);
+
+        // console.log('space',node)
+        return element;
+      }
+
+      CreateNode.prototype.textDraw = function(targetElem,text){
+        var text = document.createTextNode(text);
+        targetElem.appendChild(text);
+      }
+      CreateNode.prototype.cssDraw = function(targetElem,styleObject){
+        Object.keys(styleObject).forEach(function(styleKey,index){
+          targetElem.style[styleKey] = styleObject[styleKey];
+        });
+      }
+      CreateNode.prototype.attrDraw = function(targetElem,attrObject){
+        Object.keys(attrObject).forEach(function(attrKey,index){
+          targetElem.setAttribute(attrKey,attrObject[attrKey]);
+        });
+      }
+      CreateNode.prototype.appendDraw = function(targetElem,chlidren){
+        var that = this;
+        chlidren.forEach(function(child,index){
+          console.log(child)
+          targetElem.appendChild(that.parse(child));
+        });
+      }
+  
+      var wrapList = new CreateNode({
+        nodeName:'div',
+        nodeStyle:{color:'red',fontSize:'15px'},
+        nodeAttr:{id:'kerryId',class:'kerry_class'},
+        nodeChildren:[{
+          nodeName:'strong',
+          nodeText:'테스트 목록',
+          nodeStyle:{color:'blue'},
+          nodeAttr:{class:'screen_out'}
+        },{
+          nodeName:'ul',
+          nodeChildren:[{
+            nodeName:'li',
+            nodeText:'Item1',
+            nodeStyle:{color:'red',fontSize:'13px'}
+            },
+            {
+            nodeName:'li',
+            nodeText:'Item2',
+            nodeStyle:{color:'pink',fontSize:'20px'}
+            },
+            {
+            nodeName:'li',
+            nodeText:'Item3',
+            nodeStyle:{color:'hotpink',fontSize:'30px'}
+          }]
+        }]
+      });
+
+      wrapList.render('root')
+
+      
+
+    })();
+  </script>
+    </div>
+  
+  </body></html>

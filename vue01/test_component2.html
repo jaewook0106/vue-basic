@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app1">
+    <p>부모 인스턴스 입니다.</p>
+    <child-component></child-component>
+  </div>
+
+  <div id="app2">
+    <app2-child-component></app2-child-component>
+  </div>
+
+  <div id="app3">
+    <ol>
+      <li is="app3-child-component"></li>
+    </ol>
+  </div>
+  <div id="app4">
+    <app4-child-component 
+    :text="text" 
+    :number="number" 
+    test-data="true"
+    class="parent"
+    >
+
+    </app4-child-component>
+  </div>
+
+  <div id="app5">
+    {{counter}} <br>
+    <custom-button @incrementevent="incrementTotal"></custom-button>
+    <custom-button @incrementevent="incrementTotal"></custom-button>
+    <custom-button @incrementevent="incrementTotal"></custom-button>
+  </div>
+
+  <div id="app6">
+    <todo-list-component 
+    :data="todoList"
+    @deleteclick="deleteEvent"
+    ></todo-list-component>
+  </div>
+  <script>
+
+    Vue.component('childComponent',{
+      template:'<div>전역 컴포넌트</div>'
+    })
+
+    let app1 = new Vue({
+      'el':'#app1',
+      data:{
+        
+      }
+    })
+
+    let child = {
+      template:'<div>지역 컴포넌트</div>'
+    }
+
+    let app2 = new Vue({
+      'el':'#app2',
+      components:{
+        'app2-child-component': child
+      }
+    })
+
+    let child2 = {
+      template: '<li>지역 리스트</li>'
+    }
+
+    let app3 = new Vue({
+      'el':'#app3',
+      components:{
+        'app3-child-component': child2
+      }
+    })
+
+    let child3 = {
+      template:`<div class="child">
+      {{text}} {{number}}
+      </div>`,
+      props:{
+        text: {
+          type:String,
+          required:false,
+          validator(value){
+            return value.length >=3
+          }
+        },
+        number: {
+          type:Number,
+          required:false,
+          default:0
+        }
+      }
+
+    }
+
+    let app4 = new Vue({
+      el:'#app4',
+      data:{
+        text:'뷰뷰뷰뷰',
+        number:5
+      },
+      components:{
+        'app4-child-component':child3
+      }
+
+    })
+    
+    let customButton = {
+      template:'<button @click="increment">{{counter}}</button>',
+      data(){
+        return{
+          counter:0
+        }
+      },
+      // props:['item'],
+      methods:{
+        increment(){
+          this.counter += 1
+          this.$emit('incrementevent',1)
+        }
+      }
+    }
+    let app5 = new Vue({
+      el:'#app5',
+      data:{
+        counter:0
+      },
+      components:{
+        'custom-button':customButton
+      },
+      methods: {
+        incrementTotal(val){
+          this.counter += val
+        }
+      },
+    })
+  
+    let TodoListComponent = {
+      template:`<ul>
+                  <li 
+                  v-for="item in data"
+                  :key="item.id"
+                  @click="$emit('deleteclick',item.id)"
+                  >{{item.title}}</li>
+                </ul>`,
+      props:{
+        data:{
+          type:Array,
+          default:function(){
+            return [];
+          }
+        }
+      }
+    } 
+    let app6 = new Vue({
+      el:'#app6',
+      components:{
+        TodoListComponent
+      },
+      data:{
+        todoList:[
+          {id:0, title:'빨래하기', done:false},
+          {id:1, title:'청소하기', done:false},
+          {id:2, title:'빵먹기', done:false},
+          {id:3, title:'별보기', done:false},
+          {id:4, title:'술마시기', done:false}
+        ]
+      },
+      // created(){
+      //   this.$on('deleteclick',this.deleteEvent)
+      // },
+      methods:{
+        deleteEvent(val){
+          console.log(val)
+          this.todoList = this.todoList.filter(item => item.id !== val)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue Study</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">{{message}}</div>
+  <div id="app2">
+    <span v-bind:title="message">
+      내 위에 잠시 마우스를 올리면 동적으로 바인딩 된 title을 볼 수 있습니다!
+    </span>
+  </div>
+  <hr>
+  <div id="app3">
+    <p v-if="seen">이제 저를 볼 수 있어요!</p>
+  </div>
+  <hr>
+  <div id="app4">
+    <ul>
+      <li v-for="(item, idx) in todoList" v-bind:key="idx">{{idx}} {{item.text}}</li>
+    </ul>
+  </div>
+  <hr>
+  <div id="app5">
+    <p>{{message}}</p>
+    <button v-on:click="reverseMessage">메세지 뒤집기</button>
+    <div>
+      <p v-if="toggle">내가 보이나요?</p>
+      <button v-on:click="toggleEvent">보이기 숨기기</button>
+    </div>
+    <div>
+      <ol>
+        <li v-for="item in spaceList">
+          {{item.name}}
+        </li>
+      </ol>
+      <button v-on:click="listPlus">항목 늘리기</button>
+      <span>{{aaa}}</span>
+    </div>
+  </div>
+  <hr>
+
+  <div id="app6">
+    <p>{{message}}</p>
+    <input type="text" v-model="message">
+  </div>
+  <hr>
+  <div id="app7">
+    <ol>
+      <todo-list v-for="item in todoList" v-bind:data="item" v-bind:key="item.id"></todo-list>
+    </ol>
+  </div>
+
+  <script>
+    let app = new Vue({
+      el: '#app',
+      data:{
+        message:'안녕하세요'
+      }
+    })
+
+    let app2 = new Vue({
+      el: '#app2',
+      data:{
+        message:'타이틀'
+      }
+    })
+    
+    let app3 = new Vue({
+      el:'#app3',
+      data:{
+        seen: true
+      }
+    })
+
+    let app4 = new Vue({
+      el:'#app4',
+      data:{
+        todoList:[
+          {text:'vue공부'},
+          {text:'vue테스트'},
+          {text:'vue빠르게하기'}
+        ]
+      }
+    })
+
+    let app5 = new Vue({
+      el:'#app5',
+      data:{
+        message:'안녕하세요 vue js',
+        message2:'안녕하세요 react js',
+        toggle:true,
+        spaceList:[
+          {
+            'name':'토성'
+          },
+          {
+            'name':'화성'
+          },
+          {
+            'name':'천왕성'
+          }
+        ],
+        aaa:new Date()
+      },
+      methods:{
+        reverseMessage(e){
+          this.message = this.message.split('').reverse().join('')
+        },
+        toggleEvent(){
+          this.toggle = !this.toggle
+        },
+        listPlus(e){
+          this.spaceList.push({'name':new Date()});
+        }
+
+
+      }
+    })
+
+    let app6 = new Vue({
+      el:'#app6',
+      data:{
+        message: '안녕하세요!',
+        
+      }
+    })
+    
+    Vue.component('todo-list',{
+      props:['data'],
+      template:'<li>{{data.text}}</li>'
+    })
+
+    let app7 = new Vue({
+      el:'#app7',
+      data:{
+        todoList:[
+          {id:0,text:'이것은 리스트 입니다.'},
+          {id:1,text:'이것은 두번째'},
+          {id:2,text:'이것은 세번째'}
+        ]
+      }
+    })
+    
+    
+  </script>
+</body>
+</html>

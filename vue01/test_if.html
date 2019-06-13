@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app1">
+    <p v-if="ok">보여요</p>
+    <p v-else>안보여요</p>
+  </div>
+  <hr>
+  <div id="app2">
+    <p v-if="type === 'A'">A</p>
+    <p v-else-if="type === 'B'">B</p>
+    <p v-else-if="type === 'C'">C</p>
+    <p v-else>D</p>
+  </div>
+  <script>
+    let app1 = new Vue({
+      el:'#app1',
+      data:{
+        ok:false
+      }
+    })
+    let app2 = new Vue({
+      el:'#app2',
+      data:{
+        type:'C'
+      }
+    })
+    
+  </script>
+</body>
+</html>
