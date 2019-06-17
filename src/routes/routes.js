@@ -1,20 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Slot from './views/slot/Slot.vue'
-import Dynamic from './views/dynamic/Dynamic.vue'
-import NotFound from './views/common/NotFound.vue'
-import TreeMenu from './views/common/TreeMenu.vue'
-import Params from './views/params/Params.vue'
-import nestedRouter from './views/nested/nestedRouter.vue'
-import DynamicA from './components/dynamic/DynamicA'
-import DynamicB from './components/dynamic/DynamicB'
-import DynamicC from './components/dynamic/DynamicC'
-import Factorial from './views/factorial/Factorial'
-import Store from './views/store/Store'
-import Closure from './views/closure/Closure'
+import Home from '../views/Home.vue'
+import Slot from '../views/slot/Slot.vue'
+import Dynamic from '../views/dynamic/Dynamic.vue'
+import NotFound from '../views/common/NotFound.vue'
+import TreeMenu from '../views/common/TreeMenu.vue'
+import Params from '../views/params/Params.vue'
+import nestedRouter from '../views/nested/nestedRouter.vue'
+import DynamicA from '../components/dynamic/DynamicA'
+import DynamicB from '../components/dynamic/DynamicB'
+import DynamicC from '../components/dynamic/DynamicC'
+import Factorial from '../views/factorial/Factorial'
+import Store from '../views/store/Store'
+import Store2 from '../views/store/Store2'
+import Closure from '../views/closure/Closure'
+import Todolist from '../views/todolist/Todolist'
 
-import Store2 from './views/store/Store2'
+
 
 Vue.use(Router)
 
@@ -44,7 +46,7 @@ let router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
     },
     {
       path:'/slot',
@@ -98,6 +100,10 @@ let router = new Router({
     {
       path:'/store2',
       component:Store2
+    },
+    {
+      path:'/todolist',
+      component:Todolist
     }
   ]
 })

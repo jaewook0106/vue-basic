@@ -4,7 +4,7 @@
     <p>{{user}}</p>
     <p>{{getPhoneNumber1}} - {{getPhoneNumber2}} - {{getPhoneNumber3}}</p>
     <input type="text" v-model="inputText"  />
-    <button @click="updateUser2(inputText)">뮤테이션 업데이트</button>
+    <button @click="buttonClick(inputText)">뮤테이션 업데이트</button>
     <div>
       <input type="text" v-model="inputText2"  />
       <button @click="buttonClick2(inputText2)">액션 업데이트</button>
@@ -30,9 +30,9 @@ export default {
   },
   computed: {
 
-    localComponent(){
-      //로컬 컴포넌트용 computed
-    },
+    // localComponent(){
+    //   //로컬 컴포넌트용 computed
+    // },
 
 
     ...mapState(['user']),

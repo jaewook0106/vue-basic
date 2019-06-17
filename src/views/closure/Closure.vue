@@ -75,6 +75,11 @@ export default {
     }
     const makeCakePre = prepareCake('CHOCO Banana')
     makeCakePre()
+
+
+    const arr = ['a','b','c']
+    for(let key of arr.keys()) console.log(key)
+    
     
   },
   methods: {

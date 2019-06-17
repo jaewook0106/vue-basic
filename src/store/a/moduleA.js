@@ -1,4 +1,5 @@
 export const ModuleA = {
+  namespaced:true,
   state:{
     condition:'a',
     count:0,

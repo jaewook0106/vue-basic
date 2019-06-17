@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {ModuleA} from './a/moduleA'
 import {ModuleB} from './b/moduleB'
+import {TodoListModule} from './todolist/todoListModule'
+
 
 Vue.use(Vuex)
 
@@ -45,6 +47,7 @@ export default new Vuex.Store({
   },
   modules:{
     a:ModuleA,
-    b:ModuleB
+    b:ModuleB,
+    TodoListModule
   }
 })
