@@ -2,12 +2,15 @@
   <div class="template_todo">
     <div class="wrap_todo">
       <div class="cont_tit">
-        <strong class="tit_item">Space List</strong>{{spaceText}}
+        <strong class="tit_item">{{listTitle}}</strong>
       </div>
       <ul class="list_todo">
         <li v-for="(item,idx) in todoListData" :key="idx">
-          <span class="txt_info">{{idx + 1}}. {{item.infoText}}</span>
-          <button class="btn_delete"><span class="txt_close">X</span></button>
+          <span class="txt_info" v-if="item.basicSetting">{{idx + 1}}. {{item.infoText}}</span>
+          <input type="text" class="inp_revise" v-if="item.reviseSetting" v-model="item.infoText">
+          <button class="btn_revise" v-if="item.basicSetting" @click="clickReviseList(idx)" >수정</button>
+          <button class="btn_revise" v-if="item.reviseSetting" @click="clickConfirm(idx)">확인</button>
+          <button class="btn_delete" @click="clickDeleteList(idx)"><span class="txt_close">X</span></button>
         </li>
       </ul>
       <div class="box_control">
@@ -25,11 +28,18 @@ import {mapState, mapActions} from 'vuex'
 export default {
   data(){
     return{
-      spaceTextInp:''
+      listTitle:'Space List',
+      spaceTextInp:'',
+      infoControl:true,
     }
   },
+  created(){
+    // this.$store.dispatch('TodoListModule/testTest');
+    
+  },
   mounted(){
-    console.log(this.$store.state.TodoListModule)
+    // console.log(this.$store.state.TodoListModule)
+    
   },
   computed:{
     ...mapState('TodoListModule',['todoListData','spaceText'])
@@ -40,7 +50,7 @@ export default {
     }
   },
   methods:{
-    ...mapActions('TodoListModule',['clickAddList'])
+    ...mapActions('TodoListModule',['clickAddList','clickDeleteList','clickReviseList','clickConfirm'])
     
   }
 }
@@ -70,7 +80,7 @@ export default {
     li{
       position:relative;
       height:50px;
-      padding:10px 30px 10px 10px;
+      padding:10px 120px 10px 10px;
       border-bottom:1px solid #ddd;
       text-align:left;
       box-sizing:border-box;
@@ -90,6 +100,27 @@ export default {
         font-size:15px;
       }
     }
+  }
+  .btn_revise{
+    position:absolute;
+    top:10px;
+    right:40px;
+    height:30px;
+    padding:0 20px;
+    border-radius:2px;
+    font-size:14px;
+    font-weight:bold;
+    background-color:#6b930a;
+    box-sizing:border-box;
+    color:#fff;
+  }
+  .inp_revise{
+    width:100%;
+    height:30px;
+    padding:5px;
+    border:1px solid #42b983;
+    border-radius:2px;
+    box-sizing:border-box;
   }
   .box_control{
     position:relative;
